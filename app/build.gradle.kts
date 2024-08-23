@@ -71,6 +71,7 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     ksp(libs.room.complier)
     testImplementation(libs.junit.jupiter)
+    testImplementation(libs.kotest.assertions.core)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     debugImplementation(libs.androidx.ui.tooling)

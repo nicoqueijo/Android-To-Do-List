@@ -1,6 +1,6 @@
 package com.nicoqueijo.android.branch
 
-import org.junit.jupiter.api.Assertions.assertEquals
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
 
@@ -12,6 +12,6 @@ import org.junit.jupiter.api.Test
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+        4.shouldBe(2 + 2)
     }
 }
