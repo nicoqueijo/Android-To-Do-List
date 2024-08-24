@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.nicoqueijo.android.branch"
+    namespace = "com.nicoqueijo.android.todolist"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.nicoqueijo.android.branch"
+        applicationId = "com.nicoqueijo.android.todolist"
         minSdk = 34
         targetSdk = 34
         versionCode = 1

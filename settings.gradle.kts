@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Branch"
+rootProject.name = "Android-To-Do-List"
 include(":app")
