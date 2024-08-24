@@ -23,7 +23,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.nicoqueijo.android.todolist.domain.model.ToDo
-import com.nicoqueijo.android.todolist.presentation.model.ToDoItemState
 import com.nicoqueijo.android.todolist.presentation.theme.ToDoListTheme
 import com.nicoqueijo.android.todolist.presentation.util.DarkLightPreviews
 import com.nicoqueijo.android.todolist.presentation.util.XS
@@ -32,7 +31,11 @@ import com.nicoqueijo.android.todolist.presentation.util.XXXS
 @Composable
 fun ToDoItem(
     modifier: Modifier = Modifier,
-    state: ToDoItemState,
+    state: ToDo,
+    onEdit: ((ToDo) -> Unit)? = null, // Open bottom sheet with title and description pre-filled from ToDo
+    onDrag: (() -> Unit)? = null, // Need the Reorderable library to do this
+    onCheck: ((Boolean) -> Unit)? = null, // Mark the ToDo as completed and upsert it to the db (screen should update automatically)
+    onRemove: ((ToDo) -> Unit)? = null, // Delete the ToDo using the Dao (screen should update automatically)
 ) {
     Surface(
         modifier = modifier
@@ -58,9 +61,9 @@ fun ToDoItem(
                     tint = MaterialTheme.colorScheme.primary,
                 )
                 Checkbox(
-                    checked = state.toDo.isCompleted,
+                    checked = state.isCompleted,
                     onCheckedChange = { isChecked ->
-                        state.onCheck?.invoke(isChecked)
+                        onCheck?.invoke(isChecked)
                     }
                 )
 
@@ -71,33 +74,33 @@ fun ToDoItem(
                         modifier = Modifier
                             .padding(top = XS)
                             .clickable {
-                                state.onEdit?.invoke(state.toDo)
+                                onEdit?.invoke(state)
                             },
-                        text = state.toDo.title,
+                        text = state.title,
                         color = MaterialTheme.colorScheme.primary,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        textDecoration = if (state.toDo.isCompleted) {
+                        textDecoration = if (state.isCompleted) {
                             TextDecoration.LineThrough
                         } else {
                             null
                         },
                     )
-                    if (state.toDo.description != null) {
+                    if (state.description != null) {
                         Spacer(
                             modifier = Modifier.size(size = XXXS)
                         )
                         Text(
                             modifier = Modifier.clickable {
-                                state.onEdit?.invoke(state.toDo)
+                                onEdit?.invoke(state)
                             },
-                            text = state.toDo.description,
+                            text = state.description,
                             color = MaterialTheme.colorScheme.primary,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Normal,
-                            textDecoration = if (state.toDo.isCompleted) {
+                            textDecoration = if (state.isCompleted) {
                                 TextDecoration.LineThrough
                             } else {
                                 null
@@ -109,7 +112,7 @@ fun ToDoItem(
                     modifier = Modifier
                         .padding(top = XS)
                         .clickable {
-                            state.onRemove?.invoke(state.toDo)
+                            onRemove?.invoke(state)
                         },
                     imageVector = Icons.Filled.Delete,
                     contentDescription = null,
@@ -124,12 +127,10 @@ fun ToDoItem(
 @DarkLightPreviews
 @Composable
 fun ToDoItemPreview() {
-    val state = ToDoItemState(
-        toDo = ToDo(
-            position = 1,
-            title = "Grocery Shopping",
-            description = "Buy groceries for the week, including fruits, vegetables, milk, bread, and eggs.",
-        )
+    val state = ToDo(
+        position = 1,
+        title = "Grocery Shopping",
+        description = "Buy groceries for the week, including fruits, vegetables, milk, bread, and eggs.",
     )
     ToDoListTheme {
         ToDoItem(state = state)
@@ -139,13 +140,11 @@ fun ToDoItemPreview() {
 @DarkLightPreviews
 @Composable
 fun ToDoCompletedPreview() {
-    val state = ToDoItemState(
-        toDo = ToDo(
-            position = 1,
-            title = "Exercise",
-            description = "Go for a 30-minute run in the park and complete a 15-minute stretching session.",
-            isCompleted = true,
-        )
+    val state = ToDo(
+        position = 1,
+        title = "Exercise",
+        description = "Go for a 30-minute run in the park and complete a 15-minute stretching session.",
+        isCompleted = true,
     )
     ToDoListTheme {
         ToDoItem(state = state)

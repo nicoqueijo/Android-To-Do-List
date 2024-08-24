@@ -9,6 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.nicoqueijo.android.todolist.data.Repository
 import com.nicoqueijo.android.todolist.domain.model.ToDo
+import com.nicoqueijo.android.todolist.presentation.composables.ToDoScreen
 import com.nicoqueijo.android.todolist.presentation.theme.ToDoListTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
@@ -25,11 +26,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ToDoListTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize()
-                ) { innerPadding ->
-
-                }
+                ToDoScreen()
             }
         }
 
