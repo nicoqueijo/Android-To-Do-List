@@ -1,4 +1,4 @@
-package com.nicoqueijo.android.branch
+package com.nicoqueijo.android.branch.domain.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class ToDo(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val order: Int,
+    val position: Int,
     val title: String,
     val description: String? = null,
     val isCompleted: Boolean = false,
