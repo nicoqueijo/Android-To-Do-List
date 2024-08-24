@@ -53,8 +53,9 @@ fun ToDoItem(
             ) {
                 Icon(
                     modifier = Modifier.padding(top = XS),
-                    imageVector = Icons.Default.Menu,
+                    imageVector = Icons.Filled.Menu,
                     contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
                 )
                 Checkbox(
                     checked = state.toDo.isCompleted,
@@ -110,8 +111,9 @@ fun ToDoItem(
                         .clickable {
                             state.onRemove?.invoke(state.toDo)
                         },
-                    imageVector = Icons.Default.Delete,
+                    imageVector = Icons.Filled.Delete,
                     contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
                 )
             }
 

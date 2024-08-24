@@ -107,7 +107,7 @@ fun ToDoScreen(
                                     }
                                 ) {
                                     Icon(
-                                        imageVector = Icons.Default.Delete,
+                                        imageVector = Icons.Filled.Delete,
                                         contentDescription = null,
                                         tint = MaterialTheme.colorScheme.primary,
                                     )
@@ -131,21 +131,19 @@ fun ToDoScreen(
                     .padding(paddingValues = innerPadding),
             ) {
                 if (state?.showDialog == true) {
-                    /*RemoveCurrenciesDialog(
+                    RemoveToDosDialog(
                         onConfirmClick = {
-                            onEvent?.invoke(UiEvent.ConfirmDialog)
+                            /*onEvent?.invoke(UiEvent.ConfirmDialog)*/
                         },
                         onDismissClick = {
-                            onEvent?.invoke(UiEvent.CancelDialog)
+                            /*onEvent?.invoke(UiEvent.CancelDialog)*/
                         },
-                    )*/
+                    )
                 }
 
                 Column {
                     TapTargetCoordinator(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .weight(weight = 1f),
+                        modifier = Modifier.fillMaxSize(),
                         showTapTargets = state?.isFirstLaunch == true,
                         onComplete = {
                             /*onEvent?.invoke(
@@ -158,7 +156,7 @@ fun ToDoScreen(
                                 contentAlignment = Alignment.BottomCenter
                             ) {
                                 if (state?.toDoStates?.isEmpty() == true) {
-                                    /*EmptyListIndicator()*/
+                                    EmptyListIndicator()
                                 } else {
                                     val lazyListState = rememberLazyListState()
                                     /*val reorderableLazyColumnState =
@@ -303,6 +301,50 @@ fun ToDoScreenPreview() {
             ),
         )
     )
+    BranchTheme {
+        ToDoScreen(state = state)
+    }
+}
+
+@DarkLightPreviews
+@Composable
+fun ToDoScreenDialogPreview() {
+    val state = ToDoScreenState(
+        toDoStates = listOf(
+            ToDoItemState(
+                toDo = ToDo(
+                    position = 1,
+                    title = "Grocery Shopping",
+                    description = "Buy groceries for the week, including fruits, vegetables, milk, bread, and eggs.",
+                )
+            ),
+            ToDoItemState(
+                toDo = ToDo(
+                    position = 2,
+                    title = "Plan Weekend Trip",
+                    description = "Research destinations for a weekend trip, book a hotel, and plan activities.",
+                )
+            ),
+            ToDoItemState(
+                toDo = ToDo(
+                    position = 3,
+                    title = "Morning Exercise",
+                    description = "Go for a 30-minute run in the park and complete a 15-minute stretching session.",
+                    isCompleted = true,
+                )
+            ),
+        ),
+        showDialog = true,
+    )
+    BranchTheme {
+        ToDoScreen(state = state)
+    }
+}
+
+@DarkLightPreviews
+@Composable
+fun ToDoScreenEmptyPreview() {
+    val state = ToDoScreenState()
     BranchTheme {
         ToDoScreen(state = state)
     }
