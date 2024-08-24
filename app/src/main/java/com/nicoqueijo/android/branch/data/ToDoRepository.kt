@@ -3,6 +3,7 @@ package com.nicoqueijo.android.branch.data
 import com.nicoqueijo.android.branch.core.di.IODispatcher
 import com.nicoqueijo.android.branch.domain.model.ToDo
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -29,7 +30,7 @@ class ToDoRepository @Inject constructor(
         }
     }
 
-    override suspend fun getAllToDos(): List<ToDo> {
+    override suspend fun getAllToDos(): Flow<List<ToDo>> {
         return withContext(context = dispatcher) {
             toDoDao.getAllToDos()
         }

@@ -20,7 +20,7 @@ interface ToDoDao {
     suspend fun deleteAllToDos()
 
     @Query("SELECT * FROM ToDo ORDER BY position ASC")
-    suspend fun getAllToDos(): Flow<List<ToDo>>
+    fun getAllToDos(): Flow<List<ToDo>>
 
     @Query("SELECT COUNT(*) FROM ToDo")
     suspend fun getToDosCount(): Int

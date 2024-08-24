@@ -57,8 +57,6 @@ class MainActivity : ComponentActivity() {
 
             val toDos = repo.getAllToDos()
 
-            repo.deleteToDo(toDos[1])
-
             repo.toString()
         }
     }

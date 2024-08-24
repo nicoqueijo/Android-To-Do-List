@@ -23,16 +23,16 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.nicoqueijo.android.branch.domain.model.ToDo
-import com.nicoqueijo.android.branch.presentation.model.ToDoState
+import com.nicoqueijo.android.branch.presentation.model.ToDoItemState
 import com.nicoqueijo.android.branch.presentation.theme.BranchTheme
 import com.nicoqueijo.android.branch.presentation.util.DarkLightPreviews
 import com.nicoqueijo.android.branch.presentation.util.XS
 import com.nicoqueijo.android.branch.presentation.util.XXXS
 
 @Composable
-fun ToDo(
+fun ToDoItem(
     modifier: Modifier = Modifier,
-    state: ToDoState,
+    state: ToDoItemState,
 ) {
     Surface(
         modifier = modifier
@@ -121,8 +121,8 @@ fun ToDo(
 
 @DarkLightPreviews
 @Composable
-fun ToDoPreview() {
-    val state = ToDoState(
+fun ToDoItemPreview() {
+    val state = ToDoItemState(
         toDo = ToDo(
             position = 1,
             title = "Grocery Shopping",
@@ -130,14 +130,14 @@ fun ToDoPreview() {
         )
     )
     BranchTheme {
-        ToDo(state = state)
+        ToDoItem(state = state)
     }
 }
 
 @DarkLightPreviews
 @Composable
 fun ToDoCompletedPreview() {
-    val state = ToDoState(
+    val state = ToDoItemState(
         toDo = ToDo(
             position = 1,
             title = "Exercise",
@@ -146,6 +146,6 @@ fun ToDoCompletedPreview() {
         )
     )
     BranchTheme {
-        ToDo(state = state)
+        ToDoItem(state = state)
     }
 }

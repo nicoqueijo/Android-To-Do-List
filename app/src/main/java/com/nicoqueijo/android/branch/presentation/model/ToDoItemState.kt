@@ -2,7 +2,7 @@ package com.nicoqueijo.android.branch.presentation.model
 
 import com.nicoqueijo.android.branch.domain.model.ToDo
 
-data class ToDoState(
+data class ToDoItemState(
     val toDo: ToDo,
     val onEdit: ((ToDo) -> Unit)? = null, // Open bottom sheet with title and description pre-filled from ToDo
     val onDrag: (() -> Unit)? = null, // Need the Reorderable library to do this
