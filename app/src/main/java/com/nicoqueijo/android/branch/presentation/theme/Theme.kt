@@ -1,4 +1,4 @@
-package com.nicoqueijo.android.branch.ui.theme
+package com.nicoqueijo.android.branch.presentation.theme
 
 import android.app.Activity
 import android.os.Build

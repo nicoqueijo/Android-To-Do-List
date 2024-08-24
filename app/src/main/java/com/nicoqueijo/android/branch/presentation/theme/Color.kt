@@ -1,4 +1,4 @@
-package com.nicoqueijo.android.branch.ui.theme
+package com.nicoqueijo.android.branch.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
