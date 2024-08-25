@@ -26,7 +26,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -34,7 +33,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -199,8 +197,20 @@ fun ToDoScreen(
                                             ToDoListItem(
                                                 state = toDo,
                                                 onEdit = {
-                                                    onEvent?.invoke(UiEvent.EditToDo(toDo))
-                                                }
+                                                    onEvent?.invoke(
+                                                        UiEvent.EditToDo(toDo = toDo)
+                                                    )
+                                                },
+                                                onCheck = {
+                                                    onEvent?.invoke(
+                                                        UiEvent.ToggleCompleteToDo(toDo = toDo)
+                                                    )
+                                                },
+                                                onRemove = {
+                                                    onEvent?.invoke(
+                                                        UiEvent.DeleteToDo(toDo = toDo)
+                                                    )
+                                                },
                                             )
                                             HorizontalDivider()
                                         }
@@ -240,8 +250,7 @@ fun ToDoScreen(
                                     }
                                 )
                                 FloatingActionButton(
-                                    modifier = Modifier
-                                        .padding(bottom = S),
+                                    modifier = Modifier.padding(bottom = S),
                                     containerColor = MaterialTheme.colorScheme.primary,
                                     contentColor = MaterialTheme.colorScheme.secondary,
                                     onClick = { onEvent?.invoke(UiEvent.AddToDo) },

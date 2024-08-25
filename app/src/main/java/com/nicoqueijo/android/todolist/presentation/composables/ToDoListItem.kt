@@ -34,7 +34,7 @@ fun ToDoListItem(
     state: ToDo,
     onEdit: (() -> Unit)? = null, // Open bottom sheet with title and description pre-filled from ToDo
     onDrag: (() -> Unit)? = null, // Need the Reorderable library to do this
-    onCheck: ((Boolean) -> Unit)? = null, // Mark the ToDo as completed and upsert it to the db (screen should update automatically)
+    onCheck: ((ToDo) -> Unit)? = null, // Mark the ToDo as completed and upsert it to the db (screen should update automatically)
     onRemove: ((ToDo) -> Unit)? = null, // Delete the ToDo using the Dao (screen should update automatically)
 ) {
     Surface(
@@ -62,8 +62,8 @@ fun ToDoListItem(
                 )
                 Checkbox(
                     checked = state.isCompleted,
-                    onCheckedChange = { isChecked ->
-                        onCheck?.invoke(isChecked)
+                    onCheckedChange = {
+                        onCheck?.invoke(state)
                     }
                 )
 

@@ -25,7 +25,9 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.sp
 import com.nicoqueijo.android.todolist.R
 import com.nicoqueijo.android.todolist.domain.model.ToDo
@@ -63,7 +65,14 @@ fun SheetContent(
     state: ToDo?,
     onSave: ((ToDo) -> Unit)? = null,
 ) {
-    val title = remember { mutableStateOf(state?.title ?: "") }
+    val title = remember {
+        mutableStateOf(
+            TextFieldValue(
+                state?.title ?: "",
+                TextRange(state?.title?.length ?: 0)
+            )
+        )
+    }
     val description = remember { mutableStateOf(state?.description ?: "") }
     val focusRequester = remember { FocusRequester() }
 
@@ -99,6 +108,7 @@ fun SheetContent(
                 focusedIndicatorColor = Color.Transparent
             )
         )
+
         TextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -119,7 +129,7 @@ fun SheetContent(
                 focusedContainerColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent
-            )
+            ),
         )
 
         Box(
@@ -131,15 +141,15 @@ fun SheetContent(
             Button(
                 onClick = {
                     val updatedToDo = state?.copy(
-                        title = title.value,
+                        title = title.value.text,
                         description = description.value
                     ) ?: ToDo(
-                        title = title.value,
+                        title = title.value.text,
                         description = description.value
                     )
                     onSave?.invoke(updatedToDo)
                 },
-                enabled = title.value.isNotBlank(),
+                enabled = title.value.text.isNotBlank(),
                 colors = ButtonDefaults.buttonColors(
                     disabledContainerColor = MaterialTheme.colorScheme.tertiary,
                     disabledContentColor = MaterialTheme.colorScheme.tertiaryContainer.copy(
