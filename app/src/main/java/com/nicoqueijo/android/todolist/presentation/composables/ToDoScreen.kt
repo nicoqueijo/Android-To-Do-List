@@ -69,6 +69,9 @@ fun ToDoScreen(
     ToDoScreen(
         modifier = modifier,
         state = uiState,
+        onEvent = { event ->
+            viewModel?.onEvent(event = event)
+        }
     )
 }
 
@@ -148,7 +151,17 @@ fun ToDoScreen(
                         },
                     )
                 }
-
+                if (state?.showBottomSheet == true) {
+                    ToDoBottomSheetItem(
+                        state = state.activeToDo,
+                        onSave = { toDo ->
+                            onEvent?.invoke(UiEvent.SaveToDo)  // make activeToDo null
+                        },
+                        onDismiss = {
+                            onEvent?.invoke(UiEvent.DismissBottomSheet) // make activeToDo null
+                        },
+                    )
+                }
                 Column {
                     TapTargetCoordinator(
                         modifier = Modifier.fillMaxSize(),
@@ -182,7 +195,7 @@ fun ToDoScreen(
                                             items = rememberedToDoStates?.toList() ?: emptyList(),
                                             key = { toDo -> toDo.hashCode() }
                                         ) { toDo ->
-                                            ToDoItem(state = toDo)
+                                            ToDoListItem(state = toDo)
                                             HorizontalDivider()
                                         }
                                         item {
@@ -225,7 +238,7 @@ fun ToDoScreen(
                                         .padding(bottom = S),
                                     containerColor = MaterialTheme.colorScheme.primary,
                                     contentColor = MaterialTheme.colorScheme.secondary,
-                                    onClick = { /*onFabClick?.invoke()*/ },
+                                    onClick = { onEvent?.invoke(UiEvent.AddToDo) },
                                 ) {
                                     Icon(
                                         imageVector = Icons.Filled.Add,
@@ -252,13 +265,11 @@ fun ToDoScreenPreview() {
                 title = "Grocery Shopping",
                 description = "Buy groceries for the week, including fruits, vegetables, milk, bread, and eggs.",
             ),
-
             ToDo(
                 position = 2,
                 title = "Plan Weekend Trip",
                 description = "Research destinations for a weekend trip, book a hotel, and plan activities.",
             ),
-
             ToDo(
                 position = 3,
                 title = "Morning Exercise",
@@ -282,13 +293,13 @@ fun ToDoScreenPreview() {
                 isCompleted = true,
             ),
             ToDo(
-                position = 1,
+                position = 7,
                 title = "Organize Desk",
                 description = "Sort through paperwork, declutter, and organize the desk drawers.",
                 isCompleted = true,
             ),
             ToDo(
-                position = 7,
+                position = 8,
                 title = "Call Mom",
                 description = "Check in with Mom about the weekend plans and how she’s doing.",
                 isCompleted = true,

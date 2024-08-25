@@ -40,38 +40,27 @@ class ToDoViewModel @Inject constructor(
     fun onEvent(event: UiEvent) {
         when (event) {
             UiEvent.AddToDo -> {
-                TODO()
+                // Move logic to private function & use case
+                _uiState.value = _uiState.value.copy(
+                    showBottomSheet = true
+                )
             }
-            UiEvent.CancelDialog -> {
-                TODO()
+            UiEvent.CancelDialog -> TODO()
+            UiEvent.CompleteToDo -> TODO()
+            UiEvent.ConfirmDialog -> TODO()
+            UiEvent.DeleteAllToDos -> TODO()
+            UiEvent.DeleteToDo -> TODO()
+            UiEvent.DismissBottomSheet -> {
+                // Move logic to private function & use case
+                _uiState.value = _uiState.value.copy(
+                    showBottomSheet = false
+                )
             }
-            UiEvent.CompleteToDo -> {
-                TODO()
-            }
-            UiEvent.ConfirmDialog -> {
-                TODO()
-            }
-            UiEvent.DeleteAllToDos -> {
-                TODO()
-            }
-            UiEvent.DeleteToDo -> {
-                TODO()
-            }
-            UiEvent.EditToDo -> {
-                TODO()
-            }
-            UiEvent.ReorderToDos -> {
-                TODO()
-            }
-            UiEvent.RestoreToDo -> {
-                TODO()
-            }
-            UiEvent.SaveToDo -> {
-                TODO()
-            }
-            UiEvent.ToggleOffIsFirstLaunch -> {
-                TODO()
-            }
+            UiEvent.EditToDo -> TODO()
+            UiEvent.ReorderToDos -> TODO()
+            UiEvent.RestoreToDo -> TODO()
+            UiEvent.SaveToDo -> TODO()
+            UiEvent.ToggleOffIsFirstLaunch -> TODO()
         }
     }
 }

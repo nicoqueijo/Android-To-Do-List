@@ -29,7 +29,7 @@ import com.nicoqueijo.android.todolist.presentation.util.XS
 import com.nicoqueijo.android.todolist.presentation.util.XXXS
 
 @Composable
-fun ToDoItem(
+fun ToDoListItem(
     modifier: Modifier = Modifier,
     state: ToDo,
     onEdit: ((ToDo) -> Unit)? = null, // Open bottom sheet with title and description pre-filled from ToDo
@@ -126,20 +126,20 @@ fun ToDoItem(
 
 @DarkLightPreviews
 @Composable
-fun ToDoItemPreview() {
+fun ToDoListItemPreview() {
     val state = ToDo(
         position = 1,
         title = "Grocery Shopping",
         description = "Buy groceries for the week, including fruits, vegetables, milk, bread, and eggs.",
     )
     ToDoListTheme {
-        ToDoItem(state = state)
+        ToDoListItem(state = state)
     }
 }
 
 @DarkLightPreviews
 @Composable
-fun ToDoCompletedPreview() {
+fun ToDoListItemCompletedPreview() {
     val state = ToDo(
         position = 1,
         title = "Exercise",
@@ -147,6 +147,6 @@ fun ToDoCompletedPreview() {
         isCompleted = true,
     )
     ToDoListTheme {
-        ToDoItem(state = state)
+        ToDoListItem(state = state)
     }
 }
