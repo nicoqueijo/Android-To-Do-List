@@ -3,6 +3,7 @@ package com.nicoqueijo.android.todolist.domain.di
 import com.nicoqueijo.android.todolist.data.Repository
 import com.nicoqueijo.android.todolist.domain.usecases.DeleteAllToDosUseCase
 import com.nicoqueijo.android.todolist.domain.usecases.DeleteToDoUseCase
+import com.nicoqueijo.android.todolist.domain.usecases.ReorderToDosUseCase
 import com.nicoqueijo.android.todolist.domain.usecases.RestoreToDoUseCase
 import com.nicoqueijo.android.todolist.domain.usecases.RetrieveToDosUseCase
 import com.nicoqueijo.android.todolist.domain.usecases.SaveToDoUseCase
@@ -28,6 +29,7 @@ object ToDoUseCasesModule {
             deleteAllToDosUseCase = DeleteAllToDosUseCase(repository = repository),
             deleteToDoUseCase = DeleteToDoUseCase(repository = repository),
             restoreToDoUseCase = RestoreToDoUseCase(repository = repository),
+            reorderToDosUseCase = ReorderToDosUseCase(repository = repository),
         )
     }
 }

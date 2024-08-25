@@ -27,11 +27,13 @@ import com.nicoqueijo.android.todolist.presentation.theme.ToDoListTheme
 import com.nicoqueijo.android.todolist.presentation.util.DarkLightPreviews
 import com.nicoqueijo.android.todolist.presentation.util.XS
 import com.nicoqueijo.android.todolist.presentation.util.XXXS
+import sh.calvin.reorderable.ReorderableCollectionItemScope
 
 @Composable
 fun ToDoListItem(
     modifier: Modifier = Modifier,
     state: ToDo,
+    reorderableScope: ReorderableCollectionItemScope? = null,
     onEdit: (() -> Unit)? = null, // Open bottom sheet with title and description pre-filled from ToDo
     onDrag: (() -> Unit)? = null, // Need the Reorderable library to do this
     onCheck: ((ToDo) -> Unit)? = null, // Mark the ToDo as completed and upsert it to the db (screen should update automatically)
@@ -46,7 +48,6 @@ fun ToDoListItem(
                 .padding(
                     start = XS,
                     end = XS,
-                    /*bottom = XS,*/
                 )
         ) {
             Row(
@@ -55,7 +56,17 @@ fun ToDoListItem(
                     .fillMaxWidth(),
             ) {
                 Icon(
-                    modifier = Modifier.padding(top = XS),
+                    modifier = if (reorderableScope != null) {
+                        with(reorderableScope) {
+                            Modifier
+                                .padding(top = XS)
+                                .draggableHandle {
+                                    onDrag?.invoke()
+                                }
+                        }
+                    } else {
+                        Modifier.padding(top = XS)
+                    },
                     imageVector = Icons.Filled.Menu,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,

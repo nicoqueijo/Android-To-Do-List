@@ -7,4 +7,5 @@ data class ToDoUseCases(
     val deleteAllToDosUseCase: DeleteAllToDosUseCase,
     val deleteToDoUseCase: DeleteToDoUseCase,
     val restoreToDoUseCase: RestoreToDoUseCase,
+    val reorderToDosUseCase: ReorderToDosUseCase,
 )

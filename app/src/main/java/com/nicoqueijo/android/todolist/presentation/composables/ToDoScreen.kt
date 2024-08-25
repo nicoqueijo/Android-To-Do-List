@@ -1,6 +1,7 @@
 package com.nicoqueijo.android.todolist.presentation.composables
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -64,6 +65,8 @@ import com.nicoqueijo.android.todolist.presentation.util.XL
 import com.nicoqueijo.android.todolist.presentation.util.XXXS
 import com.psoffritti.taptargetcompose.TapTargetCoordinator
 import kotlinx.coroutines.launch
+import sh.calvin.reorderable.ReorderableItem
+import sh.calvin.reorderable.rememberReorderableLazyListState
 
 @Composable
 fun ToDoScreen(
@@ -81,7 +84,7 @@ fun ToDoScreen(
 }
 
 @SuppressLint("MutableCollectionMutableState")
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun ToDoScreen(
     modifier: Modifier = Modifier,
@@ -140,8 +143,8 @@ fun ToDoScreen(
                 }
             }
         ) { innerPadding ->
-            var rememberedToDoStates by remember { mutableStateOf(state?.toDos?.toMutableStateList()) } // Wrapping in a remember is required to enable reordering.
-            rememberedToDoStates = state?.toDos?.toMutableStateList() // Assignment allows currencies to show up on the screen.
+            var rememberedToDos by remember { mutableStateOf(state?.toDos?.toMutableStateList()) } // Wrapping in a remember is required to enable reordering.
+            rememberedToDos = state?.toDos?.toMutableStateList() // Assignment allows ToDos to show up on the screen.
             Box(
                 modifier = Modifier
                     .background(color = MaterialTheme.colorScheme.surface)
@@ -186,58 +189,75 @@ fun ToDoScreen(
                                     EmptyListIndicator()
                                 } else {
                                     val lazyListState = rememberLazyListState()
-                                    /*val reorderableLazyColumnState =
+                                    val reorderableLazyColumnState =
                                         rememberReorderableLazyListState(lazyListState) { from, to ->
-                                            rememberedCurrencies = rememberedCurrencies?.apply {
+                                            rememberedToDos = rememberedToDos?.apply {
                                                 add(to.index, removeAt(from.index))
                                             }
-                                        }*/
+                                        }
                                     LazyColumn(
                                         modifier = Modifier.fillMaxSize(),
                                         /*contentPadding = PaddingValues(vertical = (0.15).dp), // https://github.com/Calvin-LL/Reorderable/issues/32#issuecomment-2099453540*/
                                         state = lazyListState,
                                     ) {
                                         items(
-                                            items = rememberedToDoStates?.toList() ?: emptyList(),
-                                            key = { toDo -> toDo.hashCode() }
+                                            items = rememberedToDos?.toList() ?: emptyList(),
+                                            key = { toDo -> toDo.id!! } // Saved ToDos guaranteed to have ids
                                         ) { toDo ->
-                                            ToDoListItem(
-                                                state = toDo,
-                                                onEdit = {
-                                                    onEvent?.invoke(
-                                                        UiEvent.EditToDo(toDo = toDo)
-                                                    )
-                                                },
-                                                onCheck = {
-                                                    onEvent?.invoke(
-                                                        UiEvent.ToggleCompleteToDo(toDo = toDo)
-                                                    )
-                                                },
-                                                onRemove = {
-                                                    onEvent?.invoke(
-                                                        UiEvent.DeleteToDo(toDo = toDo)
-                                                    )
-                                                    coroutineScope.launch {
-                                                        snackbarHostState.currentSnackbarData?.dismiss()
-                                                        val result = snackbarHostState.showSnackbar(
-                                                            message = context.getString(R.string.item_removed_label),
-                                                            actionLabel = context.getString(R.string.undo_label),
-                                                            duration = SnackbarDuration.Short,
+                                            ReorderableItem(
+                                                state = reorderableLazyColumnState,
+                                                key = toDo.id!! // Saved ToDos guaranteed to have ids
+                                            ) {
+                                                ToDoListItem(
+                                                    modifier = Modifier.animateItem(),
+                                                    state = toDo,
+                                                    reorderableScope = this,
+                                                    onEdit = {
+                                                        onEvent?.invoke(
+                                                            UiEvent.EditToDo(toDo = toDo)
                                                         )
-                                                        when (result) {
-                                                            SnackbarResult.ActionPerformed -> {
-                                                                onEvent?.invoke(
-                                                                    UiEvent.RestoreToDo(toDo = toDo)
+                                                    },
+                                                    onDrag = {
+                                                        onEvent?.invoke(
+                                                            UiEvent.ReorderToDos(
+                                                                toDos = rememberedToDos!!.toList()
+                                                            )
+                                                        )
+                                                    },
+                                                    onCheck = {
+                                                        onEvent?.invoke(
+                                                            UiEvent.ToggleCompleteToDo(toDo = toDo)
+                                                        )
+                                                    },
+                                                    onRemove = {
+                                                        onEvent?.invoke(
+                                                            UiEvent.DeleteToDo(toDo = toDo)
+                                                        )
+                                                        coroutineScope.launch {
+                                                            snackbarHostState.currentSnackbarData?.dismiss()
+                                                            val result =
+                                                                snackbarHostState.showSnackbar(
+                                                                    message = context.getString(R.string.item_removed_label),
+                                                                    actionLabel = context.getString(
+                                                                        R.string.undo_label
+                                                                    ),
+                                                                    duration = SnackbarDuration.Short,
                                                                 )
-                                                            }
+                                                            when (result) {
+                                                                SnackbarResult.ActionPerformed -> {
+                                                                    onEvent?.invoke(
+                                                                        UiEvent.RestoreToDo(toDo = toDo)
+                                                                    )
+                                                                }
 
-                                                            else -> {
-                                                                // Do nothing
+                                                                else -> {
+                                                                    // Do nothing
+                                                                }
                                                             }
                                                         }
-                                                    }
-                                                },
-                                            )
+                                                    },
+                                                )
+                                            }
                                             HorizontalDivider()
                                         }
                                         item {

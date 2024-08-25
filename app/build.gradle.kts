@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.hilt.android)
+    implementation(libs.reorderable)
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
     implementation(libs.tap.target.compose)

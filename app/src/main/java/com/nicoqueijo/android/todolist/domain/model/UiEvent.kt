@@ -9,7 +9,7 @@ sealed interface UiEvent {
     data object DeleteAllToDos : UiEvent
     data class DeleteToDo(val toDo: ToDo) : UiEvent
     data class RestoreToDo(val toDo: ToDo) : UiEvent
-    data object ReorderToDos : UiEvent
+    data class ReorderToDos(val toDos: List<ToDo>) : UiEvent
     data object ConfirmDialog : UiEvent
     data object CancelDialog : UiEvent
     data object ToggleOffIsFirstLaunch : UiEvent

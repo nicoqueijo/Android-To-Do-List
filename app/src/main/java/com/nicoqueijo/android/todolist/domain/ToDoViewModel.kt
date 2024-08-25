@@ -35,6 +35,64 @@ class ToDoViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Handles various UI events and delegates them to the appropriate use cases or functions.
+     *
+     * @param event The UI event to handle.
+     */
+    fun onEvent(event: UiEvent) {
+        when (event) {
+            UiEvent.AddToDo -> {
+                addToDo()
+            }
+
+            is UiEvent.EditToDo -> {
+                editToDo(toDo = event.toDo)
+            }
+
+            is UiEvent.SaveToDo -> {
+                saveToDo(toDo = event.toDo)
+            }
+
+            UiEvent.DismissBottomSheet -> {
+                dismissBottomSheet()
+            }
+
+            is UiEvent.ToggleCompleteToDo -> {
+                toggleCompleteToDo(toDo = event.toDo)
+            }
+
+            UiEvent.DeleteAllToDos -> {
+                updateDialogDisplay(toggle = true)
+            }
+
+            is UiEvent.DeleteToDo -> {
+                deleteToDo(toDo = event.toDo)
+            }
+
+            is UiEvent.ReorderToDos -> {
+                reorderToDos(toDos = event.toDos)
+            }
+
+            is UiEvent.RestoreToDo -> {
+                restoreToDo(toDo = event.toDo)
+            }
+
+            UiEvent.ConfirmDialog -> {
+                deleteAllToDos()
+                updateDialogDisplay(toggle = false)
+            }
+
+            UiEvent.CancelDialog -> {
+                updateDialogDisplay(toggle = false)
+            }
+
+            UiEvent.ToggleOffIsFirstLaunch -> {
+                TODO()
+            }
+        }
+    }
+
     private fun updateToDos(toDos: List<ToDo>) {
         _uiState.value = _uiState.value.copy(
             toDos = toDos
@@ -53,82 +111,52 @@ class ToDoViewModel @Inject constructor(
         }
     }
 
-    private fun deleteCurrency(toDo: ToDo) {
+    private fun deleteToDo(toDo: ToDo) {
         viewModelScope.launch(context = dispatcher) {
             useCases.deleteToDoUseCase(toDo = toDo)
         }
     }
 
-    /**
-     * Handles various UI events and delegates them to the appropriate use cases or functions.
-     *
-     * @param event The UI event to handle.
-     */
-    fun onEvent(event: UiEvent) {
-        when (event) {
-            UiEvent.AddToDo -> {
-                // Move logic to private function & use case
-                _uiState.value = _uiState.value.copy(
-                    activeToDo = null,
-                    showBottomSheet = true,
-                )
-            }
+    private fun addToDo() {
+        _uiState.value = _uiState.value.copy(
+            activeToDo = null,
+            showBottomSheet = true,
+        )
+    }
 
-            UiEvent.CancelDialog -> {
-                updateDialogDisplay(toggle = false)
-            }
+    private fun toggleCompleteToDo(toDo: ToDo) {
+        viewModelScope.launch(context = dispatcher) {
+            useCases.completeToDosUseCase(toDo = toDo)
+        }
+    }
 
-            is UiEvent.ToggleCompleteToDo -> {
-                viewModelScope.launch(context = dispatcher) {
-                    useCases.completeToDosUseCase(toDo = event.toDo)
-                }
-            }
+    private fun dismissBottomSheet() {
+        _uiState.value = _uiState.value.copy(
+            activeToDo = null,
+            showBottomSheet = false,
+        )
+    }
 
-            UiEvent.ConfirmDialog -> {
-                deleteAllToDos()
-                updateDialogDisplay(toggle = false)
-            }
+    private fun editToDo(toDo: ToDo) {
+        _uiState.value = _uiState.value.copy(
+            activeToDo = toDo,
+            showBottomSheet = true,
+        )
+    }
 
-            UiEvent.DeleteAllToDos -> {
-                updateDialogDisplay(toggle = true)
-            }
+    private fun saveToDo(toDo: ToDo) {
+        viewModelScope.launch(context = dispatcher) {
+            useCases.saveToDoUseCase(toDo = toDo)
+        }
+        _uiState.value = _uiState.value.copy(
+            activeToDo = null,
+            showBottomSheet = false,
+        )
+    }
 
-            is UiEvent.DeleteToDo -> {
-                deleteCurrency(toDo = event.toDo)
-            }
-
-            UiEvent.DismissBottomSheet -> {
-                // Move logic to private function & use case
-                _uiState.value = _uiState.value.copy(
-                    activeToDo = null,
-                    showBottomSheet = false,
-                )
-            }
-
-            is UiEvent.EditToDo -> {
-                val toDo = event.toDo
-
-                _uiState.value = _uiState.value.copy(
-                    activeToDo = toDo,
-                    showBottomSheet = true,
-                )
-            }
-
-            UiEvent.ReorderToDos -> TODO()
-            is UiEvent.RestoreToDo -> {
-                restoreToDo(toDo = event.toDo)
-            }
-
-            UiEvent.ToggleOffIsFirstLaunch -> TODO()
-            is UiEvent.SaveToDo -> {
-                viewModelScope.launch(context = dispatcher) {
-                    useCases.saveToDoUseCase(toDo = event.toDo)
-                }
-                _uiState.value = _uiState.value.copy(
-                    activeToDo = null,
-                    showBottomSheet = false,
-                )
-            }
+    private fun reorderToDos(toDos: List<ToDo>) {
+        viewModelScope.launch(context = dispatcher) {
+            useCases.reorderToDosUseCase(toDos = toDos)
         }
     }
 
