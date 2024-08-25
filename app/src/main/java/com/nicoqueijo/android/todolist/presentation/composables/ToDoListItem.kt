@@ -32,7 +32,7 @@ import com.nicoqueijo.android.todolist.presentation.util.XXXS
 fun ToDoListItem(
     modifier: Modifier = Modifier,
     state: ToDo,
-    onEdit: ((ToDo) -> Unit)? = null, // Open bottom sheet with title and description pre-filled from ToDo
+    onEdit: (() -> Unit)? = null, // Open bottom sheet with title and description pre-filled from ToDo
     onDrag: (() -> Unit)? = null, // Need the Reorderable library to do this
     onCheck: ((Boolean) -> Unit)? = null, // Mark the ToDo as completed and upsert it to the db (screen should update automatically)
     onRemove: ((ToDo) -> Unit)? = null, // Delete the ToDo using the Dao (screen should update automatically)
@@ -68,14 +68,14 @@ fun ToDoListItem(
                 )
 
                 Column(
-                    modifier = Modifier.weight(weight = 1f)
+                    modifier = Modifier
+                        .weight(weight = 1f)
+                        .clickable {
+                            onEdit?.invoke()
+                        }
                 ) {
                     Text(
-                        modifier = Modifier
-                            .padding(top = XS)
-                            .clickable {
-                                onEdit?.invoke(state)
-                            },
+                        modifier = Modifier.padding(top = XS),
                         text = state.title,
                         color = MaterialTheme.colorScheme.primary,
                         fontSize = 18.sp,
@@ -93,9 +93,6 @@ fun ToDoListItem(
                             modifier = Modifier.size(size = XXXS)
                         )
                         Text(
-                            modifier = Modifier.clickable {
-                                onEdit?.invoke(state)
-                            },
                             text = state.description,
                             color = MaterialTheme.colorScheme.primary,
                             fontSize = 18.sp,

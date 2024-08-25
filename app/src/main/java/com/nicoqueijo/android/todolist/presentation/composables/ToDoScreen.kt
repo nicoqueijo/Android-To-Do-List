@@ -26,6 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -33,6 +34,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -134,8 +136,7 @@ fun ToDoScreen(
             }
         ) { innerPadding ->
             var rememberedToDoStates by remember { mutableStateOf(state?.toDos?.toMutableStateList()) } // Wrapping in a remember is required to enable reordering.
-            rememberedToDoStates =
-                state?.toDos?.toMutableStateList() // Assignment allows currencies to show up on the screen.
+            rememberedToDoStates = state?.toDos?.toMutableStateList() // Assignment allows currencies to show up on the screen.
             Box(
                 modifier = Modifier
                     .background(color = MaterialTheme.colorScheme.surface)
@@ -155,7 +156,7 @@ fun ToDoScreen(
                     ToDoBottomSheetItem(
                         state = state.activeToDo,
                         onSave = { toDo ->
-                            onEvent?.invoke(UiEvent.SaveToDo)  // make activeToDo null
+                            onEvent?.invoke(UiEvent.SaveToDo(toDo))  // make activeToDo null
                         },
                         onDismiss = {
                             onEvent?.invoke(UiEvent.DismissBottomSheet) // make activeToDo null
@@ -195,7 +196,12 @@ fun ToDoScreen(
                                             items = rememberedToDoStates?.toList() ?: emptyList(),
                                             key = { toDo -> toDo.hashCode() }
                                         ) { toDo ->
-                                            ToDoListItem(state = toDo)
+                                            ToDoListItem(
+                                                state = toDo,
+                                                onEdit = {
+                                                    onEvent?.invoke(UiEvent.EditToDo(toDo))
+                                                }
+                                            )
                                             HorizontalDivider()
                                         }
                                         item {

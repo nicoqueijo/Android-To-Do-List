@@ -10,9 +10,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -36,12 +38,14 @@ import com.nicoqueijo.android.todolist.presentation.util.XXS
 @Composable
 fun ToDoBottomSheetItem(
     modifier: Modifier = Modifier,
+    sheetState: SheetState = rememberModalBottomSheetState(),
     state: ToDo?,
     onSave: ((ToDo) -> Unit)? = null,
     onDismiss: (() -> Unit)? = null,
 ) {
     ModalBottomSheet(
         modifier = modifier,
+        sheetState = sheetState,
         onDismissRequest = { onDismiss?.invoke() },
         containerColor = MaterialTheme.colorScheme.surfaceVariant,
         contentColor = MaterialTheme.colorScheme.surfaceVariant
@@ -126,7 +130,14 @@ fun SheetContent(
         ) {
             Button(
                 onClick = {
-
+                    val updatedToDo = state?.copy(
+                        title = title.value,
+                        description = description.value
+                    ) ?: ToDo(
+                        title = title.value,
+                        description = description.value
+                    )
+                    onSave?.invoke(updatedToDo)
                 },
                 enabled = title.value.isNotBlank(),
                 colors = ButtonDefaults.buttonColors(

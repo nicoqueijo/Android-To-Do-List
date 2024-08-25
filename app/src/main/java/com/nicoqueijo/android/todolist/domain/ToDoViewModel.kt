@@ -42,7 +42,7 @@ class ToDoViewModel @Inject constructor(
             UiEvent.AddToDo -> {
                 // Move logic to private function & use case
                 _uiState.value = _uiState.value.copy(
-                    showBottomSheet = true
+                    showBottomSheet = true,
                 )
             }
             UiEvent.CancelDialog -> TODO()
@@ -56,11 +56,25 @@ class ToDoViewModel @Inject constructor(
                     showBottomSheet = false
                 )
             }
-            UiEvent.EditToDo -> TODO()
+            is UiEvent.EditToDo -> {
+                val toDo = event.toDo
+
+                _uiState.value = _uiState.value.copy(
+                    activeToDo = toDo,
+                    showBottomSheet = true,
+                )
+            }
             UiEvent.ReorderToDos -> TODO()
             UiEvent.RestoreToDo -> TODO()
-            UiEvent.SaveToDo -> TODO()
+
             UiEvent.ToggleOffIsFirstLaunch -> TODO()
+            is UiEvent.SaveToDo -> {
+                val toDo = event.toDo
+                _uiState.value = _uiState.value.copy(
+                    activeToDo = null,
+                    showBottomSheet = false,
+                )
+            }
         }
     }
 }
