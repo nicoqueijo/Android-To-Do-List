@@ -133,9 +133,7 @@ fun SheetContent(
         )
 
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = S),
+            modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.BottomEnd
         ) {
             Button(

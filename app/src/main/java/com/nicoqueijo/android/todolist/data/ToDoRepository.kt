@@ -18,6 +18,12 @@ class ToDoRepository @Inject constructor(
         }
     }
 
+    override suspend fun upsertToDos(toDos: List<ToDo>) {
+        withContext(context = dispatcher) {
+            toDoDao.upsertToDos(toDos = toDos)
+        }
+    }
+
     override suspend fun deleteToDo(toDo: ToDo) {
         withContext(context = dispatcher) {
             toDoDao.deleteToDo(toDo = toDo)

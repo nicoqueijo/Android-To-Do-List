@@ -13,6 +13,9 @@ interface ToDoDao {
     @Upsert
     suspend fun upsertToDo(toDo: ToDo)
 
+    @Upsert
+    suspend fun upsertToDos(toDos: List<ToDo>)
+
     @Delete
     suspend fun deleteToDo(toDo: ToDo)
 

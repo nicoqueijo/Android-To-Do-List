@@ -8,6 +8,13 @@ class SaveToDoUseCase @Inject constructor(
     private val repository: Repository,
 ) {
     suspend operator fun invoke(toDo: ToDo) {
-        repository.upsertToDo(toDo = toDo)
+        val position = if (toDo.position == -1) {
+            repository.getToDosCount()
+        } else {
+            toDo.position
+        }
+        repository.upsertToDo(
+            toDo = toDo.copy(position = position)
+        )
     }
 }

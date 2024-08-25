@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class ToDo(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
-    val position: Int? = null,
+    var position: Int = -1,
     val title: String,
     val description: String? = null,
     val isCompleted: Boolean = false,
