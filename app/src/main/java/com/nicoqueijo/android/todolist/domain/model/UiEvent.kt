@@ -8,7 +8,7 @@ sealed interface UiEvent {
     data class ToggleCompleteToDo(val toDo: ToDo) : UiEvent
     data object DeleteAllToDos : UiEvent
     data class DeleteToDo(val toDo: ToDo) : UiEvent
-    data object RestoreToDo : UiEvent
+    data class RestoreToDo(val toDo: ToDo) : UiEvent
     data object ReorderToDos : UiEvent
     data object ConfirmDialog : UiEvent
     data object CancelDialog : UiEvent

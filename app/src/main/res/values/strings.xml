@@ -8,4 +8,6 @@
     <string name="label_description">Description</string>
     <string name="label_title">Title</string>
     <string name="label_save">Save</string>
+    <string name="item_removed_label">Item removed</string>
+    <string name="undo_label">Undo</string>
 </resources>

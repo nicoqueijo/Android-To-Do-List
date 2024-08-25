@@ -27,8 +27,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -37,12 +39,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -59,6 +63,7 @@ import com.nicoqueijo.android.todolist.presentation.util.S
 import com.nicoqueijo.android.todolist.presentation.util.XL
 import com.nicoqueijo.android.todolist.presentation.util.XXXS
 import com.psoffritti.taptargetcompose.TapTargetCoordinator
+import kotlinx.coroutines.launch
 
 @Composable
 fun ToDoScreen(
@@ -83,7 +88,9 @@ fun ToDoScreen(
     state: UiState?,
     onEvent: ((UiEvent) -> Unit)? = null,
 ) {
+    val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
     Surface(
         modifier = modifier.fillMaxSize(),
     ) {
@@ -210,6 +217,25 @@ fun ToDoScreen(
                                                     onEvent?.invoke(
                                                         UiEvent.DeleteToDo(toDo = toDo)
                                                     )
+                                                    coroutineScope.launch {
+                                                        snackbarHostState.currentSnackbarData?.dismiss()
+                                                        val result = snackbarHostState.showSnackbar(
+                                                            message = context.getString(R.string.item_removed_label),
+                                                            actionLabel = context.getString(R.string.undo_label),
+                                                            duration = SnackbarDuration.Short,
+                                                        )
+                                                        when (result) {
+                                                            SnackbarResult.ActionPerformed -> {
+                                                                onEvent?.invoke(
+                                                                    UiEvent.RestoreToDo(toDo = toDo)
+                                                                )
+                                                            }
+
+                                                            else -> {
+                                                                // Do nothing
+                                                            }
+                                                        }
+                                                    }
                                                 },
                                             )
                                             HorizontalDivider()

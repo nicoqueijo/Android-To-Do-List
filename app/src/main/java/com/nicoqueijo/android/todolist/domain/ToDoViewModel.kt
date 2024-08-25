@@ -115,7 +115,9 @@ class ToDoViewModel @Inject constructor(
             }
 
             UiEvent.ReorderToDos -> TODO()
-            UiEvent.RestoreToDo -> TODO()
+            is UiEvent.RestoreToDo -> {
+                restoreToDo(toDo = event.toDo)
+            }
 
             UiEvent.ToggleOffIsFirstLaunch -> TODO()
             is UiEvent.SaveToDo -> {
@@ -127,6 +129,12 @@ class ToDoViewModel @Inject constructor(
                     showBottomSheet = false,
                 )
             }
+        }
+    }
+
+    private fun restoreToDo(toDo: ToDo) {
+        viewModelScope.launch(context = dispatcher) {
+            useCases.restoreToDoUseCase(toDo = toDo)
         }
     }
 }

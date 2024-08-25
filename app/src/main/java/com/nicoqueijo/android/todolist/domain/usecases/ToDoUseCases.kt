@@ -6,4 +6,5 @@ data class ToDoUseCases(
     val completeToDosUseCase: ToggleCompleteToDoUseCase,
     val deleteAllToDosUseCase: DeleteAllToDosUseCase,
     val deleteToDoUseCase: DeleteToDoUseCase,
+    val restoreToDoUseCase: RestoreToDoUseCase,
 )
