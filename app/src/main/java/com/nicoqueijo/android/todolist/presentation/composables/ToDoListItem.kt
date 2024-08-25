@@ -46,7 +46,7 @@ fun ToDoListItem(
                 .padding(
                     start = XS,
                     end = XS,
-                    bottom = XS,
+                    /*bottom = XS,*/
                 )
         ) {
             Row(
@@ -93,6 +93,7 @@ fun ToDoListItem(
                             modifier = Modifier.size(size = XXXS)
                         )
                         Text(
+                            modifier = Modifier.padding(bottom = XS),
                             text = state.description,
                             color = MaterialTheme.colorScheme.primary,
                             fontSize = 18.sp,

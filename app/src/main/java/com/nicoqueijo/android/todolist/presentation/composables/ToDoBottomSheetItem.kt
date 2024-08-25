@@ -142,10 +142,10 @@ fun SheetContent(
                 onClick = {
                     val updatedToDo = state?.copy(
                         title = title.value.text,
-                        description = description.value
+                        description = description.value.ifBlank { null }
                     ) ?: ToDo(
                         title = title.value.text,
-                        description = description.value
+                        description = description.value.ifBlank { null }
                     )
                     onSave?.invoke(updatedToDo)
                 },

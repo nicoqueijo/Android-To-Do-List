@@ -154,10 +154,10 @@ fun ToDoScreen(
                     ToDoBottomSheetItem(
                         state = state.activeToDo,
                         onSave = { toDo ->
-                            onEvent?.invoke(UiEvent.SaveToDo(toDo))  // make activeToDo null
+                            onEvent?.invoke(UiEvent.SaveToDo(toDo))
                         },
                         onDismiss = {
-                            onEvent?.invoke(UiEvent.DismissBottomSheet) // make activeToDo null
+                            onEvent?.invoke(UiEvent.DismissBottomSheet)
                         },
                     )
                 }
