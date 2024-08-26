@@ -7,6 +7,12 @@ To-Do List Android app.
 - Reorder To-Do items with drag & drop.
 - Save To-Do items to storage.
 
+## Screenshots
+<p float="left">
+  <img src="graphics/screenshots/light.png" hspace="4" width="400" />
+  <img src="graphics/screenshots/dark.png" hspace="4" width="400" />
+</p>
+
 ## Built With
 - [Compose](https://developer.android.com/develop/ui/compose) - Android’s modern toolkit for building native UI with a declarative approach.
 - [Room](https://developer.android.com/jetpack/androidx/releases/room) - A persistence library that provides an abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.
