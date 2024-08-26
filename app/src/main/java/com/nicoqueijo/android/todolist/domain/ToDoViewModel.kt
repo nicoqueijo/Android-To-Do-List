@@ -110,47 +110,10 @@ class ToDoViewModel @Inject constructor(
         useCases.setSampleToDosUseCase()
     }
 
-    private fun updateToDos(toDos: List<ToDo>) {
-        _uiState.value = _uiState.value.copy(
-            toDos = toDos
-        )
-    }
-
-    private fun updateDialogDisplay(toggle: Boolean) {
-        _uiState.value = _uiState.value.copy(
-            showDialog = toggle
-        )
-    }
-
-    private fun deleteAllToDos() {
-        viewModelScope.launch(context = dispatcher) {
-            useCases.deleteAllToDosUseCase()
-        }
-    }
-
-    private fun deleteToDo(toDo: ToDo) {
-        viewModelScope.launch(context = dispatcher) {
-            useCases.deleteToDoUseCase(toDo = toDo)
-        }
-    }
-
     private fun addToDo() {
         _uiState.value = _uiState.value.copy(
             activeToDo = null,
             showBottomSheet = true
-        )
-    }
-
-    private fun toggleCompleteToDo(toDo: ToDo) {
-        viewModelScope.launch(context = dispatcher) {
-            useCases.toggleCompleteToDoUseCase(toDo = toDo)
-        }
-    }
-
-    private fun dismissBottomSheet() {
-        _uiState.value = _uiState.value.copy(
-            activeToDo = null,
-            showBottomSheet = false
         )
     }
 
@@ -171,6 +134,37 @@ class ToDoViewModel @Inject constructor(
         )
     }
 
+    private fun dismissBottomSheet() {
+        _uiState.value = _uiState.value.copy(
+            activeToDo = null,
+            showBottomSheet = false
+        )
+    }
+
+    private fun toggleCompleteToDo(toDo: ToDo) {
+        viewModelScope.launch(context = dispatcher) {
+            useCases.toggleCompleteToDoUseCase(toDo = toDo)
+        }
+    }
+
+    private fun deleteToDo(toDo: ToDo) {
+        viewModelScope.launch(context = dispatcher) {
+            useCases.deleteToDoUseCase(toDo = toDo)
+        }
+    }
+
+    private fun deleteAllToDos() {
+        viewModelScope.launch(context = dispatcher) {
+            useCases.deleteAllToDosUseCase()
+        }
+    }
+
+    private fun updateToDos(toDos: List<ToDo>) {
+        _uiState.value = _uiState.value.copy(
+            toDos = toDos
+        )
+    }
+
     private fun reorderToDos(toDos: List<ToDo>) {
         viewModelScope.launch(context = dispatcher) {
             useCases.reorderToDosUseCase(toDos = toDos)
@@ -181,6 +175,12 @@ class ToDoViewModel @Inject constructor(
         viewModelScope.launch(context = dispatcher) {
             useCases.restoreToDoUseCase(toDo = toDo)
         }
+    }
+
+    private fun updateDialogDisplay(toggle: Boolean) {
+        _uiState.value = _uiState.value.copy(
+            showDialog = toggle
+        )
     }
 
     private fun toggleOffIsFirstLaunch() {
