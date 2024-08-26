@@ -25,9 +25,9 @@ class ToDoViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        setIsFirstLaunch()
-        setSampleToDos()
         viewModelScope.launch(context = dispatcher) {
+            setIsFirstLaunch()
+            setSampleToDos()
             val toDos = useCases.retrieveToDosUseCase()
             toDos.collectLatest { databaseToDos ->
                 updateToDos(databaseToDos)
@@ -93,18 +93,14 @@ class ToDoViewModel @Inject constructor(
         }
     }
 
-    private fun setIsFirstLaunch() {
-        viewModelScope.launch(context = dispatcher) {
-            _uiState.value = _uiState.value.copy(
-                isFirstLaunch = useCases.retrieveIsFirstLaunchUseCase()
-            )
-        }
+    private suspend fun setIsFirstLaunch() {
+        _uiState.value = _uiState.value.copy(
+            isFirstLaunch = useCases.retrieveIsFirstLaunchUseCase()
+        )
     }
 
-    private fun setSampleToDos() {
-        viewModelScope.launch(context = dispatcher) {
-            useCases.setSampleToDosUseCase()
-        }
+    private suspend fun setSampleToDos() {
+        useCases.setSampleToDosUseCase()
     }
 
     private fun updateToDos(toDos: List<ToDo>) {
