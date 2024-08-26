@@ -19,9 +19,7 @@ class ToggleCompleteToDoUseCase @Inject constructor(
      *
      * @param toDo The [ToDo] item whose completion status is to be toggled.
      */
-    suspend operator fun invoke(
-        toDo: ToDo,
-    ) {
+    suspend operator fun invoke(toDo: ToDo) {
         repository.upsertToDo(
             toDo = toDo.copy(
                 isCompleted = !toDo.isCompleted
