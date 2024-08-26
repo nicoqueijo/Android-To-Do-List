@@ -4,10 +4,21 @@ import com.nicoqueijo.android.todolist.data.Repository
 import com.nicoqueijo.android.todolist.domain.model.ToDo
 import javax.inject.Inject
 
+/**
+ * Use case for setting up sample To-Do items during the first launch of the application.
+ *
+ * @property repository The [Repository] instance used to access and modify To-Do data.
+ */
 class SetSampleToDosUseCase @Inject constructor(
     private val repository: Repository,
 ) {
 
+    /**
+     * Inserts sample To-Do items into the repository if it is the first launch of the application.
+     *
+     * Checks the "is first launch" flag. If it is the first launch, a predefined list of sample
+     * To-Do items is added to the repository.
+     */
     suspend operator fun invoke() {
         if (repository.isFirstLaunch()) {
             val sampleToDos = listOf(

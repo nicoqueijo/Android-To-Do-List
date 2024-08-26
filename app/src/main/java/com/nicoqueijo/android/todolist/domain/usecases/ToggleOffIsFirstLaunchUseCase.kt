@@ -4,10 +4,9 @@ import com.nicoqueijo.android.todolist.data.Repository
 import javax.inject.Inject
 
 /**
- * Use case to toggle off the flag indicating the first launch of the application. It updates the repository
- * to mark the first launch as completed.
+ * Use case to toggle off the flag indicating the first launch of the application.
  *
- * @property repository The repository interface for data operations.
+ * @property repository The [Repository] instance used to access and modify To-Do data.
  */
 class ToggleOffIsFirstLaunchUseCase @Inject constructor(
     private val repository: Repository,

@@ -36,6 +36,15 @@ import com.nicoqueijo.android.todolist.presentation.util.DarkLightPreviews
 import com.nicoqueijo.android.todolist.presentation.util.S
 import com.nicoqueijo.android.todolist.presentation.util.XXS
 
+/**
+ * Displays a bottom sheet for creating or editing a ToDo item.
+ *
+ * @param modifier Modifier to be applied to the bottom sheet.
+ * @param sheetState State of the bottom sheet.
+ * @param state The [ToDo] item to edit, or null for a new item.
+ * @param onSave Lambda invoked with the updated [ToDo] when saved.
+ * @param onDismiss Lambda invoked when the bottom sheet is dismissed.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ToDoBottomSheetItem(
@@ -59,6 +68,13 @@ fun ToDoBottomSheetItem(
     }
 }
 
+/**
+ * Content of the bottom sheet displaying fields for editing a ToDo item.
+ *
+ * @param modifier Modifier to be applied to the content.
+ * @param state The [ToDo] item to edit, or null for a new item.
+ * @param onSave Lambda invoked with the updated [ToDo] when saved.
+ */
 @Composable
 fun SheetContent(
     modifier: Modifier = Modifier,

@@ -31,6 +31,18 @@ import com.psoffritti.taptargetcompose.TapTargetCoordinator
 import com.psoffritti.taptargetcompose.TapTargetScope
 import sh.calvin.reorderable.ReorderableCollectionItemScope
 
+/**
+ * A composable function representing a single To-Do list item with its interactive elements.
+ *
+ * @param modifier Modifier to be applied to the outer [Surface] component.
+ * @param state The [ToDo] item to be displayed.
+ * @param reorderableScope Optional scope for drag-and-drop reordering.
+ * @param showTapTargets Boolean to control the visibility of tap targets for guidance.
+ * @param onEdit Lambda invoked when the item is edited.
+ * @param onDrag Lambda invoked when the item is dragged.
+ * @param onCheck Lambda invoked when the checkbox is checked or unchecked.
+ * @param onRemove Lambda invoked when the delete icon is clicked.
+ */
 @Composable
 fun TapTargetScope.ToDoListItem(
     modifier: Modifier = Modifier,

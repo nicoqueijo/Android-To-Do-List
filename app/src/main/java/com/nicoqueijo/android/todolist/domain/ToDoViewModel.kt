@@ -15,13 +15,19 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for managing and interacting with To-Do data and UI state.
+ *
+ * @property useCases The [ToDoUseCases] instance containing use cases for To-Do operations.
+ * @property dispatcher The [CoroutineDispatcher] for handling coroutines.
+ */
 @HiltViewModel
 class ToDoViewModel @Inject constructor(
     private val useCases: ToDoUseCases,
     @DefaultDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(value = UiState())
+    private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
 
     init {
@@ -38,7 +44,7 @@ class ToDoViewModel @Inject constructor(
     /**
      * Handles various UI events and delegates them to the appropriate use cases or functions.
      *
-     * @param event The UI event to handle.
+     * @param event The [UiEvent] to handle.
      */
     fun onEvent(event: UiEvent) {
         when (event) {
@@ -93,6 +99,7 @@ class ToDoViewModel @Inject constructor(
         }
     }
 
+
     private suspend fun setIsFirstLaunch() {
         _uiState.value = _uiState.value.copy(
             isFirstLaunch = useCases.retrieveIsFirstLaunchUseCase()
@@ -130,7 +137,7 @@ class ToDoViewModel @Inject constructor(
     private fun addToDo() {
         _uiState.value = _uiState.value.copy(
             activeToDo = null,
-            showBottomSheet = true,
+            showBottomSheet = true
         )
     }
 
@@ -143,14 +150,14 @@ class ToDoViewModel @Inject constructor(
     private fun dismissBottomSheet() {
         _uiState.value = _uiState.value.copy(
             activeToDo = null,
-            showBottomSheet = false,
+            showBottomSheet = false
         )
     }
 
     private fun editToDo(toDo: ToDo) {
         _uiState.value = _uiState.value.copy(
             activeToDo = toDo,
-            showBottomSheet = true,
+            showBottomSheet = true
         )
     }
 
@@ -160,7 +167,7 @@ class ToDoViewModel @Inject constructor(
         }
         _uiState.value = _uiState.value.copy(
             activeToDo = null,
-            showBottomSheet = false,
+            showBottomSheet = false
         )
     }
 

@@ -17,10 +17,28 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 
+/**
+ * Dagger module that provides [ToDoUseCases] for dependency injection.
+ *
+ * This module is responsible for providing instances of the various use cases required by the
+ * application. These use cases encapsulate business logic related to To-Do operations and are
+ * injected into the ViewModel using Dagger Hilt. The module is installed in the [ViewModelComponent]
+ * to ensure that the provided use cases are scoped to the lifecycle of the ViewModel.
+ */
 @Module
 @InstallIn(ViewModelComponent::class)
 object ToDoUseCasesModule {
 
+    /**
+     * Provides a [ToDoUseCases] instance that aggregates all the individual use cases required
+     * by the application.
+     *
+     * This method initializes each use case with the [Repository] dependency and returns a
+     * [ToDoUseCases] instance containing all the use cases.
+     *
+     * @param repository The [Repository] instance used by the use cases for data operations.
+     * @return An instance of [ToDoUseCases] that aggregates all the To-Do related use cases.
+     */
     @Provides
     fun provideToDoUseCases(
         repository: Repository,

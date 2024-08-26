@@ -68,6 +68,12 @@ import kotlinx.coroutines.launch
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 
+/**
+ * Displays the main screen for managing ToDo items.
+ *
+ * @param modifier Modifier to be applied to the screen.
+ * @param viewModel The [ToDoViewModel] instance to handle business logic.
+ */
 @Composable
 fun ToDoScreen(
     modifier: Modifier = Modifier,
@@ -83,6 +89,17 @@ fun ToDoScreen(
     )
 }
 
+/**
+ * Displays the main screen for managing ToDo items.
+ *
+ * This composable renders the entire ToDo list user interface, including a top app bar, a list of ToDo
+ * items, and a floating action button. It handles displaying dialogs, bottom sheets, and snackbars based
+ * on the current [UiState].
+ *
+ * @param modifier Modifier to be applied to the root layout of the screen.
+ * @param state The current [UiState] representing the ToDo items and UI state.
+ * @param onEvent Lambda function to handle [UiEvent] actions, such as adding, editing, or deleting ToDo items.
+ */
 @SuppressLint("MutableCollectionMutableState")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -104,11 +121,11 @@ fun ToDoScreen(
                         navigationIcon = {
                             Row {
                                 Spacer(
-                                    modifier = Modifier.width(XXXS)
+                                    modifier = Modifier.width(width = XXXS)
                                 )
                                 Image(
                                     modifier = Modifier.size(size = XL),
-                                    painter = painterResource(id = R.drawable.ic_launcher_foreground), // Replace with an app icon
+                                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
                                     contentDescription = null
                                 )
                             }
@@ -144,8 +161,7 @@ fun ToDoScreen(
             }
         ) { innerPadding ->
             var rememberedToDos by remember { mutableStateOf(state?.toDos?.toMutableStateList()) } // Wrapping in a remember is required to enable reordering.
-            rememberedToDos =
-                state?.toDos?.toMutableStateList() // Assignment allows ToDos to show up on the screen.
+            rememberedToDos = state?.toDos?.toMutableStateList() // Assignment allows ToDos to show up on the screen.
             Box(
                 modifier = Modifier
                     .background(color = MaterialTheme.colorScheme.surface)
@@ -238,9 +254,7 @@ fun ToDoScreen(
                                                             val result =
                                                                 snackbarHostState.showSnackbar(
                                                                     message = context.getString(R.string.item_removed_label),
-                                                                    actionLabel = context.getString(
-                                                                        R.string.undo_label
-                                                                    ),
+                                                                    actionLabel = context.getString(R.string.undo_label),
                                                                     duration = SnackbarDuration.Short,
                                                                 )
                                                             when (result) {
@@ -256,7 +270,7 @@ fun ToDoScreen(
                                                             }
                                                         }
                                                     },
-                                                    showTapTargets = toDo.position == 1
+                                                    showTapTargets = toDo.position == 1 // Show to second item in list
                                                 )
                                             }
                                             HorizontalDivider()
@@ -266,14 +280,14 @@ fun ToDoScreen(
                                             Spacer(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
-                                                    .height(88.dp)
+                                                    .height(height = 88.dp)
                                             )
                                         }
                                     }
                                 }
                                 Box(
                                     modifier = Modifier
-                                        .height(72.dp)
+                                        .height(height = 72.dp)
                                         .fillMaxWidth()
                                         .background(
                                             brush = Brush.verticalGradient(
@@ -304,7 +318,9 @@ fun ToDoScreen(
                                         ),
                                     containerColor = MaterialTheme.colorScheme.primary,
                                     contentColor = MaterialTheme.colorScheme.secondary,
-                                    onClick = { onEvent?.invoke(UiEvent.AddToDo) },
+                                    onClick = {
+                                        onEvent?.invoke(UiEvent.AddToDo)
+                                    },
                                 ) {
                                     Icon(
                                         imageVector = Icons.Filled.Add,
@@ -312,7 +328,6 @@ fun ToDoScreen(
                                     )
                                 }
                             }
-
                         }
                     }
                 }

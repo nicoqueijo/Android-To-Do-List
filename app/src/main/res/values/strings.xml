@@ -2,7 +2,7 @@
     <string name="app_name">To-Do List</string>
     <string name="empty_list_title">Empty list</string>
     <string name="add_todo_item_instruction">Press the + button to add</string>
-    <string name="remove_todos_dialog_title">Remove all to-dos?</string>
+    <string name="remove_todos_dialog_title">Remove all items?</string>
     <string name="remove_todos_dialog_confirm_label">OK</string>
     <string name="remove_todos_dialog_dismiss_label">Cancel</string>
     <string name="label_description">Description</string>
@@ -13,6 +13,6 @@
     <string name="tap_target_add_title">Tap to Add</string>
     <string name="tap_target_drag_title">Drag to Reorder</string>
     <string name="tap_target_complete_title">Tap the checkbox to Complete</string>
-    <string name="tap_target_edit_title">Tap a to-do to Edit</string>
+    <string name="tap_target_edit_title">Tap an item to Edit</string>
     <string name="tap_target_remove_title">Tap the trash icon to Delete</string>
 </resources>
