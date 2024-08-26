@@ -9,6 +9,7 @@ import javax.inject.Inject
 
 class ToDoRepository @Inject constructor(
     private val toDoDao: ToDoDao,
+    private val dataStoreManager: DataStoreManager,
     @IODispatcher private val dispatcher: CoroutineDispatcher,
 ) : Repository {
 
@@ -45,6 +46,18 @@ class ToDoRepository @Inject constructor(
     override suspend fun getToDosCount(): Int {
         return withContext(context = dispatcher) {
             toDoDao.getToDosCount()
+        }
+    }
+
+    override suspend fun setFirstLaunch(value: Boolean) {
+        withContext(context = dispatcher) {
+            dataStoreManager.setFirstLaunch(value = value)
+        }
+    }
+
+    override suspend fun isFirstLaunch(): Boolean {
+        return withContext(context = dispatcher) {
+            dataStoreManager.isFirstLaunch()
         }
     }
 }

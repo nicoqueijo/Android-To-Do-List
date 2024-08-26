@@ -27,17 +27,20 @@ import com.nicoqueijo.android.todolist.presentation.theme.ToDoListTheme
 import com.nicoqueijo.android.todolist.presentation.util.DarkLightPreviews
 import com.nicoqueijo.android.todolist.presentation.util.XS
 import com.nicoqueijo.android.todolist.presentation.util.XXXS
+import com.psoffritti.taptargetcompose.TapTargetCoordinator
+import com.psoffritti.taptargetcompose.TapTargetScope
 import sh.calvin.reorderable.ReorderableCollectionItemScope
 
 @Composable
-fun ToDoListItem(
+fun TapTargetScope.ToDoListItem(
     modifier: Modifier = Modifier,
     state: ToDo,
     reorderableScope: ReorderableCollectionItemScope? = null,
-    onEdit: (() -> Unit)? = null, // Open bottom sheet with title and description pre-filled from ToDo
-    onDrag: (() -> Unit)? = null, // Need the Reorderable library to do this
-    onCheck: ((ToDo) -> Unit)? = null, // Mark the ToDo as completed and upsert it to the db (screen should update automatically)
-    onRemove: ((ToDo) -> Unit)? = null, // Delete the ToDo using the Dao (screen should update automatically)
+    showTapTargets: Boolean = false,
+    onEdit: (() -> Unit)? = null,
+    onDrag: (() -> Unit)? = null,
+    onCheck: ((ToDo) -> Unit)? = null,
+    onRemove: ((ToDo) -> Unit)? = null,
 ) {
     Surface(
         modifier = modifier
@@ -63,6 +66,15 @@ fun ToDoListItem(
                                 .draggableHandle {
                                     onDrag?.invoke()
                                 }
+                                .then(
+                                    if (showTapTargets) {
+                                        Modifier.tapTarget(
+                                            tapTargetDefinition = reorderToDoTapTargetDefinition(),
+                                        )
+                                    } else {
+                                        Modifier
+                                    }
+                                )
                         }
                     } else {
                         Modifier.padding(top = XS)
@@ -72,6 +84,15 @@ fun ToDoListItem(
                     tint = MaterialTheme.colorScheme.primary,
                 )
                 Checkbox(
+                    modifier = Modifier.then(
+                        if (showTapTargets) {
+                            Modifier.tapTarget(
+                                tapTargetDefinition = completeToDoTapTargetDefinition(),
+                            )
+                        } else {
+                            Modifier
+                        }
+                    ),
                     checked = state.isCompleted,
                     onCheckedChange = {
                         onCheck?.invoke(state)
@@ -86,10 +107,20 @@ fun ToDoListItem(
                         }
                 ) {
                     Text(
-                        modifier = Modifier.padding(top = XS),
+                        modifier = Modifier
+                            .padding(top = XS)
+                            .then(
+                                if (showTapTargets) {
+                                    Modifier.tapTarget(
+                                        tapTargetDefinition = editToDoTapTargetDefinition(),
+                                    )
+                                } else {
+                                    Modifier
+                                }
+                            ),
                         text = state.title,
                         color = MaterialTheme.colorScheme.primary,
-                        fontSize = 18.sp,
+                        fontSize = 20.sp,
                         fontWeight = FontWeight.Medium,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -122,7 +153,16 @@ fun ToDoListItem(
                         .padding(top = XS)
                         .clickable {
                             onRemove?.invoke(state)
-                        },
+                        }
+                        .then(
+                            if (showTapTargets) {
+                                Modifier.tapTarget(
+                                    tapTargetDefinition = removeToDoTapTargetDefinition(),
+                                )
+                            } else {
+                                Modifier
+                            }
+                        ),
                     imageVector = Icons.Filled.Delete,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
@@ -142,7 +182,9 @@ fun ToDoListItemPreview() {
         description = "Buy groceries for the week, including fruits, vegetables, milk, bread, and eggs.",
     )
     ToDoListTheme {
-        ToDoListItem(state = state)
+        TapTargetCoordinator(showTapTargets = false) {
+            ToDoListItem(state = state)
+        }
     }
 }
 
@@ -156,6 +198,8 @@ fun ToDoListItemCompletedPreview() {
         isCompleted = true,
     )
     ToDoListTheme {
-        ToDoListItem(state = state)
+        TapTargetCoordinator(showTapTargets = false) {
+            ToDoListItem(state = state)
+        }
     }
 }

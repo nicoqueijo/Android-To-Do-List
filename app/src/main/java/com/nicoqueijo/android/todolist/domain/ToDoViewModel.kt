@@ -25,8 +25,8 @@ class ToDoViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        /*setIsFirstLaunch()*/
-        /*setSampleToDos()*/
+        setIsFirstLaunch()
+        setSampleToDos()
         viewModelScope.launch(context = dispatcher) {
             val toDos = useCases.retrieveToDosUseCase()
             toDos.collectLatest { databaseToDos ->
@@ -88,8 +88,22 @@ class ToDoViewModel @Inject constructor(
             }
 
             UiEvent.ToggleOffIsFirstLaunch -> {
-                TODO()
+                toggleOffIsFirstLaunch()
             }
+        }
+    }
+
+    private fun setIsFirstLaunch() {
+        viewModelScope.launch(context = dispatcher) {
+            _uiState.value = _uiState.value.copy(
+                isFirstLaunch = useCases.retrieveIsFirstLaunchUseCase()
+            )
+        }
+    }
+
+    private fun setSampleToDos() {
+        viewModelScope.launch(context = dispatcher) {
+            useCases.setSampleToDosUseCase()
         }
     }
 
@@ -126,7 +140,7 @@ class ToDoViewModel @Inject constructor(
 
     private fun toggleCompleteToDo(toDo: ToDo) {
         viewModelScope.launch(context = dispatcher) {
-            useCases.completeToDosUseCase(toDo = toDo)
+            useCases.toggleCompleteToDoUseCase(toDo = toDo)
         }
     }
 
@@ -163,6 +177,15 @@ class ToDoViewModel @Inject constructor(
     private fun restoreToDo(toDo: ToDo) {
         viewModelScope.launch(context = dispatcher) {
             useCases.restoreToDoUseCase(toDo = toDo)
+        }
+    }
+
+    private fun toggleOffIsFirstLaunch() {
+        viewModelScope.launch(context = dispatcher) {
+            useCases.toggleOffIsFirstLaunchUseCase()
+            _uiState.value = _uiState.value.copy(
+                isFirstLaunch = false
+            )
         }
     }
 }

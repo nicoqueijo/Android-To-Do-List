@@ -144,7 +144,8 @@ fun ToDoScreen(
             }
         ) { innerPadding ->
             var rememberedToDos by remember { mutableStateOf(state?.toDos?.toMutableStateList()) } // Wrapping in a remember is required to enable reordering.
-            rememberedToDos = state?.toDos?.toMutableStateList() // Assignment allows ToDos to show up on the screen.
+            rememberedToDos =
+                state?.toDos?.toMutableStateList() // Assignment allows ToDos to show up on the screen.
             Box(
                 modifier = Modifier
                     .background(color = MaterialTheme.colorScheme.surface)
@@ -197,7 +198,6 @@ fun ToDoScreen(
                                         }
                                     LazyColumn(
                                         modifier = Modifier.fillMaxSize(),
-                                        /*contentPadding = PaddingValues(vertical = (0.15).dp), // https://github.com/Calvin-LL/Reorderable/issues/32#issuecomment-2099453540*/
                                         state = lazyListState,
                                     ) {
                                         items(
@@ -256,6 +256,7 @@ fun ToDoScreen(
                                                             }
                                                         }
                                                     },
+                                                    showTapTargets = toDo.position == 1
                                                 )
                                             }
                                             HorizontalDivider()
@@ -296,7 +297,11 @@ fun ToDoScreen(
                                     }
                                 )
                                 FloatingActionButton(
-                                    modifier = Modifier.padding(bottom = S),
+                                    modifier = Modifier
+                                        .padding(bottom = S)
+                                        .tapTarget(
+                                            tapTargetDefinition = addToDoTapTargetDefinition()
+                                        ),
                                     containerColor = MaterialTheme.colorScheme.primary,
                                     contentColor = MaterialTheme.colorScheme.secondary,
                                     onClick = { onEvent?.invoke(UiEvent.AddToDo) },

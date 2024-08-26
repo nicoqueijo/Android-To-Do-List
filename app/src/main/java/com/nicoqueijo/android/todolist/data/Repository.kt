@@ -10,4 +10,6 @@ interface Repository {
     suspend fun deleteAllToDos()
     suspend fun getAllToDos(): Flow<List<ToDo>>
     suspend fun getToDosCount(): Int
+    suspend fun setFirstLaunch(value: Boolean)
+    suspend fun isFirstLaunch(): Boolean
 }
