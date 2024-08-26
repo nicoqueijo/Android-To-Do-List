@@ -158,7 +158,7 @@ fun SheetContent(
                 Text(
                     text = stringResource(R.string.label_save),
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
             }
         }
