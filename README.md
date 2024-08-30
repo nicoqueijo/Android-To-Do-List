@@ -2,7 +2,9 @@
 To-Do List Android app.
 
 ## Installation
-Google Play link coming soon!
+<a href="https://play.google.com/store/apps/details?id=com.nicoqueijo.android.todolist" target="_blank">
+<img src="graphics/Google_Play_Badge.png" a_blank href="https://play.google.com/store/apps/details?id=com.nicoqueijo.android.todolist">
+</a>
 
 ## Key Features
 - Add, edit, and delete To-Do items.
