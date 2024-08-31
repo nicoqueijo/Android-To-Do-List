@@ -14,8 +14,8 @@ To-Do List Android app.
 
 ## Screenshots
 <p float="left">
-  <img src="graphics/google_play/light.png" hspace="4" width="400" />
-  <img src="graphics/google_play/dark.png" hspace="4" width="400" />
+  <img src="graphics/google_play/add_light.png" hspace="4" width="400" />
+  <img src="graphics/google_play/browse_dark.png" hspace="4" width="400" />
 </p>
 
 ## Built With
